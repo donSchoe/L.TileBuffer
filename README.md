@@ -20,6 +20,8 @@ storing all loaded tile buffers on current zoom level.
 
 ### Usage
 
+Read more: http://geogl.ghost.io/leaflet-geometry-tiling/
+
 ```
   /* init cache for tile buffers for current zoom level */
   TILE_CACHE = L.tileBufferCollection(map.getZoom());
