@@ -4,7 +4,7 @@ Geometry tile buffer objects for leaflet,
 storing vertex and color array buffers and tile information.
 
 
-** Requires **
+**Requires**
   - Leaflet 0.7.3 or later
 
 
@@ -13,7 +13,7 @@ storing vertex and color array buffers and tile information.
 Geometry tile buffer object cache for leaflet,
 storing all loaded tile buffers on current zoom level.
 
-** Requires **
+**Requires**
   - Leaflet 0.7.3 or later
   - L.TileBuffer
 
