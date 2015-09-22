@@ -85,7 +85,7 @@ L.TileBufferCollection = L.Class.extend({
    * @param {L.TileBuffer} tileBuffer the tile buffer object
    * @return {Boolean} true if it was added correctly
    */
-  add : function(tileBuffer) {
+  addTile : function(tileBuffer) {
 
     /* only proceed if tileBuffer looks valid */
     if (tileBuffer.isSane() && tileBuffer.getZoom() == this.zoom) {
@@ -96,6 +96,10 @@ L.TileBufferCollection = L.Class.extend({
       return false;
     }
   },
+
+  /* @TODO prepared structure */
+  updateTile : function(tileBuffer) { /* @TODO */ }
+  removeTile : function(x, y, zoom) { /* @TODO */ }
 
   /**
    * Gets the size of the tile buffer collection
