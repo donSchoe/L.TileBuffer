@@ -98,8 +98,8 @@ L.TileBufferCollection = L.Class.extend({
   },
 
   /* @TODO prepared structure */
-  updateTile : function(tileBuffer) { /* @TODO */ }
-  removeTile : function(x, y, zoom) { /* @TODO */ }
+  updateTile : function(tileBuffer) { /* @TODO */ },
+  removeTile : function(x, y, zoom) { /* @TODO */ },
 
   /**
    * Gets the size of the tile buffer collection
