@@ -22,11 +22,6 @@
  */
 L.TileBuffer = L.Class.extend({
 
-  /* Public member variables for the tile x, y, and z */
-  x : -1,                               /* tile X                    */
-  y : -1,                               /* tile Y                    */
-  zoom : -1,                            /* tile zoom                 */
-
   /* Array buffers for webgl vertices, indices and colors */
   vertexBuffer : new Float32Array(0),   /* array buffer for vertices */
   indexBuffer : new Uint16Array(0),     /* array buffer for indices  */
@@ -48,9 +43,6 @@ L.TileBuffer = L.Class.extend({
    * @param {Array} options an array of options for the tile (x, y, zoom)
    */
   initialize : function(vertexBuffer, indexBuffer, colorBuffer, options) {
-    this.x = options.x;
-    this.y = options.y;
-    this.zoom = options.zoom;
     this.vertexBuffer = vertexBuffer;
     this.indexBuffer = indexBuffer;
     this.colorBuffer = colorBuffer;
@@ -67,9 +59,6 @@ L.TileBuffer = L.Class.extend({
    * @return {Object} the updated tile buffer object
    */
   params : function(vertexBuffer, indexBuffer, colorBuffer, options) {
-    this.x = options.x;
-    this.y = options.y;
-    this.zoom = options.zoom;
     this.vertexBuffer = vertexBuffer;
     this.indexBuffer = indexBuffer;
     this.colorBuffer = colorBuffer;
@@ -110,7 +99,7 @@ L.TileBuffer = L.Class.extend({
    * @return {Integer} the x coordinate of the tile
    */
   getX : function() {
-    return this.x;
+    return options.x;
   },
 
   /**
@@ -119,7 +108,7 @@ L.TileBuffer = L.Class.extend({
    * @return {Integer} the y coordinate of the tile
    */
   getY : function() {
-    return this.y;
+    return options.y;
   },
 
   /**
@@ -128,7 +117,7 @@ L.TileBuffer = L.Class.extend({
    * @return {Integer} the zoom factor of the tile
    */
   getZoom : function() {
-    return this.zoom;
+    return options.zoom;
   },
 
   /**
@@ -168,7 +157,7 @@ L.TileBuffer = L.Class.extend({
    * @return {Boolean} true if this tile is available
    */
   isEqual : function(x, y, zoom) {
-    if (this.x == x && this.y == y && this.zoom == zoom) {
+    if (options.x == x && options.y == y && options.zoom == zoom) {
       return true;
     } else {
       return false;
@@ -181,7 +170,7 @@ L.TileBuffer = L.Class.extend({
    * @return {Boolean} true if tile buffer parameters look sane.
    */
   isSane : function() {
-    if (this.zoom < 0 ||
+    if (options.zoom < 0 ||
         this.colorBuffer.length < 3 ||
         this.indexBuffer.length < 2 ||
         this.vertexBuffer.length < 2) {
@@ -199,7 +188,7 @@ L.TileBuffer = L.Class.extend({
    * @return {String} a string representation of the tile buffer
    */
   toString : function() {
-    return "L.TileBuffer: X(" + this.x + "), Y(" + this.y + "), Zoom(" + this.zoom + ").";
+    return "L.TileBuffer: X(" + options.x + "), Y(" + options.y + "), Zoom(" + options.zoom + ").";
   },
 });
 
