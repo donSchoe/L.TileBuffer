@@ -1,36 +1,15 @@
 /*
-  Geometry tile buffer object cache for leaflet,
+  WebGL tile buffer object cache for leaflet,
   storing all loaded tile buffers on current zoom level.
 
   ** Requires **
-    - Leaflet 0.7.3 or later
+    - Leaflet 0.7.7 or later
     - L.TileBuffer
 
   ** Copyright & License **
-  (C) 2015 Alexander Schoedon <schoedon@uni-potsdam.de>
+  (C) 2015-2016 Alexander Schoedon <schoedon@uni-potsdam.de>
 
-  All rights reserved.
-
-  Redistribution and use in source and binary forms, with or without modification,
-  are permitted provided that the following conditions are met:
-
-     1. Redistributions of source code must retain the above copyright notice,
-        this list of conditions and the following disclaimer.
-
-     2. Redistributions in binary form must reproduce the above copyright notice,
-        this list of conditions and the following disclaimer in the documentation
-        and/or other materials provided with the distribution.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  Find a GPLv3 attached.
 
   ** Credits **
   Inspired by Stanislav Sumbera's Leaflet Canvas Overlay.
@@ -88,18 +67,56 @@ L.TileBufferCollection = L.Class.extend({
   addTile : function(tileBuffer) {
 
     /* only proceed if tileBuffer looks valid */
-    if (tileBuffer.isSane() && tileBuffer.getZoom() == this.zoom) {
-      this.size += 1;
+    if (tileBuffer != null && tileBuffer.isSane() && tileBuffer.getZoom() == this.zoom) {
       this.collection.push(tileBuffer);
+      this.size = this.collection.length;
       return true;
     } else {
       return false;
     }
   },
 
-  /* @TODO prepared structure */
-  updateTile : function(tileBuffer) { /* @TODO */ },
-  removeTile : function(x, y, zoom) { /* @TODO */ },
+  /**
+   * Updates a tile buffer object in the collection
+   *
+   * @param {L.TileBuffer} tileBuffer the tile buffer object
+   * @return {Boolean} true if it was updated correctly
+   */
+  updateTile : function(tileBuffer) {
+
+    /* only proceed if tileBuffer looks valid */
+    if (tileBuffer != null && tileBuffer.isSane() && tileBuffer.getZoom() == this.zoom) {
+      this.removeTile(tileBuffer.getX(), tileBuffer.getY(), tileBuffer.getZoom());
+      return this.addTile(tileBuffer);
+    } else {
+      return false;
+    }
+  },
+
+  /**
+   * Removes a tile buffer object from the collection
+   *
+   * @param {Integer} x the x coordinate of the tile to remove
+   * @param {Integer} y the y coordinate of the tile to remove
+   * @param {Integer} zoom the zoom factor of the tile to remove
+   * @return {Boolean} true if it was removed correctly
+   */
+  removeTile : function(x, y, zoom) {
+    let remove = -1;
+    for (let i = 0; i < this.collection.length; i++) {
+      if (this.collection[i].getX() == x
+        && this.collection[i].getY() == y
+        && this.collection[i].getZoom() == zoom) {
+        remove = i;
+      }
+    }
+    if (remove > -1) {
+      this.collection.splice(remove, 1);
+      this.size = this.collection.length;
+      return true;
+    }
+    return false;
+  },
 
   /**
    * Gets the size of the tile buffer collection
@@ -117,6 +134,26 @@ L.TileBufferCollection = L.Class.extend({
    */
   getZoom : function() {
     return this.zoom;
+  },
+
+  /**
+   * Gets a tile buffer object from the collection
+   *
+   * @param {Integer} x the x coordinate of the tile to return
+   * @param {Integer} y the y coordinate of the tile to return
+   * @param {Integer} zoom the zoom factor of the tile to return
+   * @return {Object} the tile buffer from the collection
+   */
+  getTileBuffer : function(x, y, zoom) {
+    let tileBuffer = null;
+    for (let i = 0; i < this.collection.length; i++) {
+      if (this.collection[i].getX() == x
+        && this.collection[i].getY() == y
+        && this.collection[i].getZoom() == zoom) {
+        tileBuffer = this.collection[i];
+      }
+    }
+    return tileBuffer;
   },
 
   /**
